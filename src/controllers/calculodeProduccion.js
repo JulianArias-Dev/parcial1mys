@@ -2,7 +2,7 @@ const rendimientoBase = 0.8;
 const fcTemperatura = 0.9;
 const fcTiempo = 0.996;
 const eficiencia = 0.95;
-const carbonoCargado = 18250; // Toneladas de carbono por horno
+const carbonoCargado = 5475; // Toneladas de carbono por horno
 
 const produccionHornoAnual = (numHornos) => {
     let rendimientoFinal = rendimientoBase * fcTemperatura * fcTiempo * eficiencia;
@@ -39,7 +39,7 @@ const costos = (numHornos, inflacion, año, numAños, valorCarbon) => {
     // Calcular costos operacionales ajustados por inflación
     const costosOperacionAnual = ((inversionInicial * 0.18 * Math.pow(1 + inflacion, año - 1)) * 12) * numHornos;
     //
-    const costoMateriaPrima = (valorCarbon * Math.pow(1 + inflacion, año - 1)) * 18250 * numHornos; // Multiplicado por el número de hornos
+    const costoMateriaPrima = (valorCarbon * Math.pow(1 + inflacion, año - 1)) * 5475 * numHornos; // Multiplicado por el número de hornos
     // El costo total es la suma de la inversión anual y los costos operacionales
     return costoInversionAnual + costosOperacionAnual + costoMateriaPrima;
 };

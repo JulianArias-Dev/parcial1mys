@@ -58,7 +58,7 @@ const LineChart = ({ resultados }) => {
             {
                 label: 'Ganancias',
                 data: ganancias,
-                tension: 0.5,
+                tension: 0.1,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
