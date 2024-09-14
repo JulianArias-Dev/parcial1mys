@@ -123,7 +123,7 @@ const SimuladorDrummond = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="input5">Número de hornos:</label>
+            <label htmlFor="input5">Sistema de Producción:</label>
             <input
               type="number"
               id="input5"
