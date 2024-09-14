@@ -25,9 +25,10 @@ ChartJS.register(
 const LineChart = ({ resultados }) => {
     // Extrae los datos de ingresos, costos y ganancias de los resultados
     const años = resultados.map(resultado => resultado.año);
-    const ingresos = resultados.map(resultado => resultado.ingresos !== undefined ? resultado.ingresos : 0);
-    const costos = resultados.map(resultado => resultado.costos !== undefined ? resultado.costos : 0);
-    const ganancias = resultados.map(resultado => resultado.ganancias !== undefined ? resultado.ganancias : 0);
+    const ingresos = resultados.map(resultado => resultado.ingresos ?? 0);
+    const costos = resultados.map(resultado => resultado.costos ?? 0);
+    const ganancias = resultados.map(resultado => resultado.ganancias ?? 0);
+    
 
     // Configuración de la gráfica
     const midata = {
@@ -100,7 +101,19 @@ const LineChart = ({ resultados }) => {
         }
     };
 
-    return <Line data={midata} options={misoptions} />;
+    const chartContainerStyle = {
+        backgroundColor: '#070707',  // Fondo negro para el contenedor
+        padding: '20px',
+        borderRadius: '8px'
+    };
+
+    return resultados.length === 0 ? (
+        <p>No hay resultados disponibles para mostrar.</p>
+    ) : (
+        <div style={chartContainerStyle}>
+            <Line data={midata} options={misoptions} />
+        </div>
+    );
 };
 
 export default LineChart;

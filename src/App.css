@@ -24,6 +24,7 @@
 /* Estilo del título */
 .navbar h1 {
   font-size: 30px;
+  text-align: center;
   margin-bottom: 30px; /* Espacio entre el título y el botón */
   background-color: #333;
 }
@@ -91,4 +92,8 @@
 
 .btn-enviar:hover {
   background-color: #218838;
+}
+
+.grafica {
+  border-radius: 5px;
 }

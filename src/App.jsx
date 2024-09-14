@@ -28,19 +28,6 @@ const SimuladorDrummond = () => {
     event.preventDefault();
     setResultados([]); // Limpiar los resultados antes de la nueva simulación
 
-    // Validar los valores
-    if (
-      años <= 0 || valorAlquitran <= 0 || valorAzufre <= 0 || valorCoque <= 0 || numHornos <= 0 || inflacion <= 0 || valorCarbon <= 0
-    ) {
-      alert('Por favor, ingrese valores válidos para todos los campos (Mayores que 0).');
-      return;
-    }
-
-    if (años > 10) {
-      alert('Los años no pueden ser mayor a 10.');
-      return;
-    }
-
     // Convertir los valores a números
     const valoresDeMercado = {
       coque: parseFloat(valorCoque),
@@ -82,6 +69,8 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={años}
               onChange={(e) => setAños(e.target.value)}
+              min={1}
+              max={10}
               required
             />
           </div>
@@ -93,6 +82,7 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={valorCoque}
               onChange={(e) => setValorCoque(e.target.value)}
+              min={1}
               required
             />
           </div>
@@ -104,6 +94,7 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={valorAzufre}
               onChange={(e) => setValorAzufre(e.target.value)}
+              min={1}
               required
             />
           </div>
@@ -115,6 +106,7 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={valorAlquitran}
               onChange={(e) => setValorAlquitran(e.target.value)}
+              min={1}
               required
             />
           </div>
@@ -126,6 +118,7 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={valorCarbon}
               onChange={(e) => setValorCarbon(e.target.value)}
+              min={1}
               required
             />
           </div>
@@ -137,6 +130,7 @@ const SimuladorDrummond = () => {
               className="form-input"
               value={numHornos}
               onChange={(e) => setNumHornos(e.target.value)}
+              min={1}
               required
             />
           </div>
@@ -156,9 +150,10 @@ const SimuladorDrummond = () => {
           </button>
         </form>
       )}
-
-      {/* Gráfico */}
-      {resultados.length > 0 && <LineChart resultados={resultados} />}
+      <div className='grafica'>
+        {/* Gráfico */}
+        {resultados.length > 0 && <LineChart resultados={resultados} />}
+      </div>
     </div>
   );
 };
