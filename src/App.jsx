@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import './App.css'
+import LineChart from './components/LineChart.jsx';
+import {calculoAños} from './controllers/calculodeProduccion.js';
 
 const SimuladorDrummond = () => {
   const [showForm, setShowForm] = useState(false);
-  const [años, setAños] = useState('');
-  const [valorAzufre, setValorAzufre] = useState('');
-  const [valorCoque, setValorCoque] = useState('');
-  const [valorAlquitran, setValorAlquitran] = useState('');
-  const [numHornos, setNumHornos] = useState('');
-  const [inflacion, setInflacion] = useState('');
+  const [años, setAños] = useState(0);
+  const [valorAzufre, setValorAzufre] = useState(0);
+  const [valorCoque, setValorCoque] = useState(0);
+  const [valorAlquitran, setValorAlquitran] = useState(0);
+  const [numHornos, setNumHornos] = useState(0);
+  const [inflacion, setInflacion] = useState(0);
+  const [resultados, setResultados] = useState(0);
 
   const handleStart = () => {
     setShowForm(true);
@@ -35,6 +38,18 @@ const SimuladorDrummond = () => {
     console.log('Número de hornos: ', numHornos);
     console.log('Inflación: ', inflacion);
   };
+
+  const handleSubmit = () => {
+    const valoresDeMercado = {
+      coque: valorCoque,
+      azufre: valorAzufre,
+      alquitran: valorAlquitran,
+    };
+
+    const nuevosResultados = calculoAños(años, valoresDeMercado, inflacion, numHornos);
+    setResultados(nuevosResultados);
+    console.log(nuevosResultados);
+  }
 
   return (
     <div className="simulador-container">
@@ -75,11 +90,12 @@ const SimuladorDrummond = () => {
             <label htmlFor="input6">Inflación:</label>
             <input type="number" id="input6" className="form-input" value={inflacion} onChange={(e) => setInflacion(e.target.value)} required />
           </div>
-          <button type="submit" className="btn-enviar">
+          <button type="submit" className="btn-enviar" onClick={handleSubmit}>
             Generar resultados
           </button>
         </form>
       )}
+      {resultados.length > 0 && <LineChart resultados={resultados} />}
     </div>
   );
 };
