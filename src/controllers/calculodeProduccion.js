@@ -2,12 +2,12 @@ const rendimientoBase = 0.8;
 const fcTemperatura = 0.9;
 const fcTiempo = 0.996;
 const eficiencia = 0.95;
-const carbonoCargado = 18250; //Toneladas
+const carbonoCargado = 18250; // Toneladas de carbono por horno
 
-const produccionHornoAnual = () => {
+const produccionHornoAnual = (numHornos) => {
     let rendimientoFinal = rendimientoBase * fcTemperatura * fcTiempo * eficiencia;
-    let coqueTon = carbonoCargado * rendimientoFinal; //Convertir a kg
-    let coque = coqueTon*1000;
+    let coqueTon = carbonoCargado * rendimientoFinal * numHornos; // Producción total por el número de hornos
+    let coque = coqueTon * 1000; // Convertir a kg
     let azufre = coqueTon * 50;
     let alquitran = coqueTon * 100;
 
@@ -16,7 +16,7 @@ const produccionHornoAnual = () => {
         alquitran: alquitran,
         azufre: azufre
     };
-}
+};
 
 const ingresos = (valoresDeMercado, produccionFinal) => {
     let ingresoCoque = produccionFinal.coque * valoresDeMercado.coque;
@@ -30,25 +30,26 @@ const ingresos = (valoresDeMercado, produccionFinal) => {
         ingresoAzufre: ingresoAzufre,
         total: ingresosTotales
     };
-}
+};
 
-const costos = (numHornos, inflacion, año, numAños) => {
+const costos = (numHornos, inflacion, año, numAños, valorCarbon) => {
     const inversionInicial = 200000000 * numHornos;
     // Dividir la inversión inicial por el número de años
     const costoInversionAnual = inversionInicial / numAños;
     // Calcular costos operacionales ajustados por inflación
-    const costosOperacionAnual = ((inversionInicial * 0.18 * Math.pow(1 + inflacion, año-1))*12)*numHornos;
+    const costosOperacionAnual = ((inversionInicial * 0.18 * Math.pow(1 + inflacion, año - 1)) * 12) * numHornos;
+    //
+    const costoMateriaPrima = (valorCarbon * Math.pow(1 + inflacion, año - 1)) * 18250 * numHornos; // Multiplicado por el número de hornos
     // El costo total es la suma de la inversión anual y los costos operacionales
-    return costoInversionAnual + costosOperacionAnual;
-}
+    return costoInversionAnual + costosOperacionAnual + costoMateriaPrima;
+};
 
-export const calculoAños = (numAños, valoresDeMercado, inflacion, numHornos) => {
+export const calculoAños = (numAños, valoresDeMercado, inflacion, numHornos, valorCarbon) => {
     const resultados = [];
-
     // Valores iniciales
     let precios = { ...valoresDeMercado };
-    // Calcular la producción anual
-    const produccion = produccionHornoAnual();
+    // Calcular la producción anual considerando el número de hornos
+    const produccion = produccionHornoAnual(numHornos);
 
     for (let año = 1; año <= numAños; año++) {
 
@@ -57,7 +58,7 @@ export const calculoAños = (numAños, valoresDeMercado, inflacion, numHornos) =
         const ingresosTotales = ingresosAnuales.total;
 
         // Calcular los costos
-        const costoTotal = costos(numHornos, inflacion, año, numAños);
+        const costoTotal = costos(numHornos, inflacion, año, numAños, valorCarbon);
 
         // Calcular las ganancias
         const ganancias = ingresosTotales - costoTotal;
@@ -82,16 +83,4 @@ export const calculoAños = (numAños, valoresDeMercado, inflacion, numHornos) =
     return resultados;
 };
 
-// Ejemplo de uso
-const valoresDeMercado = {
-    coque: 500, // Precio por unidad de coque
-    azufre: 150, // Precio por unidad de azufre
-    alquitran: 200 // Precio por unidad de alquitrán
-};
 
-const inflacion = 0.05; // 5% de inflación anual
-const numAños = 10; // Simular 10 años
-const numHornos = 2; // Número de hornos
-
-const resultados = calculoAños(numAños, valoresDeMercado, inflacion, numHornos);
-console.log(resultados);
